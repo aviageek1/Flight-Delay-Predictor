@@ -7,27 +7,52 @@
 #include <algorithm>
 
 int main() {
-    std::string c_or_d;
-    int start_alt, st_units;
-    int end_alt, end_units;
-    int distance, distance_units;
+    // std::string c_or_d;
+    // char metric_or_not;
+    char cont;
+    int start_alt, end_alt;
+    int distance;
+    int speed;
 
     bool repeat = true;
+    // bool metric = false;
 
-    std::cout << "-------Welcome to flight ascent/descent calculator-------" << std::endl;
-    std::cout << "-----------------Made by Aayush Sharma:------------------" << std::endl;
+    std::cout << "-------Welcome to the flight ascent/descent calculator!-------" << std::endl;
+    std::cout << "-----------------Made by Aayush Sharma------------------" << std::endl;
     std::cout << std::endl;
     
     while(repeat) {
-        std::cout << "Would you like find rate of climb (c) or descent (d)? Enter: ";
-        std::cin >> c_or_d;
-        std::cout << "Enter starting altitude and then units(mi,km,nm): ";
-        std::cin >> start_alt >> st_units;
-        std::cout << "Enter ending altitude and then units(mi,km,nm): ";
-        std::cin >> end_alt >> end_units;
-        std::cout << "Enter distance to target (i.e. DME/VOR) and then units(ft,m)";
-        std::cin >> distance >> distance_units;
-    }
-    
+        // std::cout << "Would you like find rate of climb (c) or descent (d)? Enter: ";
+        // std::cin >> c_or_d;
+        // std::cout << "Would you like to use metric units? Default is customary units. (y or n): ";
+        // std::cin >> metric_or_not;
+        
+        // if (metric_or_not == 'y') {metric = true;} //enable units
+        
+        std::cout << "Enter starting altitude: ";
+        std::cin >> start_alt;
+        std::cout << std::endl;
+        
+        std::cout << "Enter ending altitude: ";
+        std::cin >> end_alt;
+        std::cout << std::endl;
+        
+        std::cout << "Enter distance to target (i.e. DME/VOR): ";
+        std::cin >> distance;
+        std::cout << std::endl;
+        
+        std::cout << "Enter airspeed (knots): ";
+        std::cin >> speed;
+        speed *= 1.15; //knots to mph
+        std::cout << std::endl;
 
+        auto alt_chng = change_in_altitude(start_alt, end_alt);
+        auto results = fpm(alt_chng, distance, speed);
+
+        std::cout << "You need to maintain a " << results.second << " feet per minute level change at " << results.first << " degrees." << std::endl;
+        std::cout << std::endl;
+        std::cout << "Would you like to make another calculation? (y or n): ";
+        std::cin >> cont;
+        if (cont == 'n') {repeat = false;}
+    }
 }
