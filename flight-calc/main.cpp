@@ -1,4 +1,5 @@
 #include "header.hpp"
+#include "implementation.cpp"
 
 #include <iostream>
 #include <string>
@@ -43,11 +44,10 @@ int main() {
         
         std::cout << "Enter groundspeed (knots): ";
         std::cin >> speed;
-        speed *= 1.15; //knots to mph
         std::cout << std::endl;
 
-        auto alt_chng = change_in_altitude(start_alt, end_alt);
-        auto results = fpm(alt_chng, distance, speed);
+        int alt_chng = change_in_altitude(start_alt, end_alt);
+        std::pair<int,int> results = fpm(alt_chng, distance, speed);
 
         std::cout << "You need to maintain a " << results.second << " feet per minute level change at " << results.first << " degrees." << std::endl;
         std::cout << std::endl;

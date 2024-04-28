@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <cmath>
 
 int change_in_altitude(int const &end_alt, int const &start_alt){
     if(start_alt > end_alt) {return start_alt-end_alt;} //descent
@@ -14,10 +15,9 @@ int angle(int const &alt_chng, int const &distance) {
 
 std::pair<int,int> fpm(int const &alt_chng, int const &distance, int const &speed) {
     auto pitch = (alt_chng/distance)/100;
-    // int mpm = speed/60;
-    // K fpm = pitch*mpm*100;
-    auto time = (distance/speed)*60;
-    auto fpm = alt_chng/time;
+    double time = (static_cast<double>(distance)/static_cast<double>(speed))*60;
+    int fpm = alt_chng/time;
+    fpm = static_cast<int>(std::round(fpm));
     std::pair<int,int> result{pitch, fpm}; //{pitch angle, fpm}
     return result;
 }
