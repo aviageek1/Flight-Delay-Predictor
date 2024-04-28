@@ -41,7 +41,7 @@ int main() {
         std::cin >> distance;
         std::cout << std::endl;
         
-        std::cout << "Enter airspeed (knots): ";
+        std::cout << "Enter groundspeed (knots): ";
         std::cin >> speed;
         speed *= 1.15; //knots to mph
         std::cout << std::endl;
