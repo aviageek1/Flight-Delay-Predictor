@@ -19,7 +19,7 @@ int angle(int const &alt_chng, int const &distance) {
     return (alt_chng/distance)/100;
 }
 
-std::pair<int,int> fpm(int const &alt_chng, int const &distance, int const &speed) {
+std::pair<int,int> angle_fpm(int const &alt_chng, int const &distance, int const &speed) {
     auto pitch = (alt_chng/distance)/100;
     double time = (static_cast<double>(distance)/static_cast<double>(speed))*60;
     int fpm = alt_chng/time;
@@ -31,6 +31,12 @@ std::pair<int,int> fpm(int const &alt_chng, int const &distance, int const &spee
 
 
 //top of descent calculator functions
-int change_in_speed(int const &cruise_speed, int const &final_speed) {}
+int change_in_speed(int const &cruise_speed, int const &final_speed) {
+    return cruise_speed-final_speed;
+}
 
-std::pair<int, int> tod(int const &alt_chng, int const &distance, int const &speed_chng, int const &fpm_or_pitch) {}
+//std::pair<int, int> tod(int const &alt_chng, int const &distance, int const &speed_chng, int const &fpm) {}
+
+int top_of_descent(int const &gs, int const &alt_chng, int const &desc_rate) {
+    return ((alt_chng)/desc_rate)*gs;
+}
