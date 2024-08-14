@@ -14,7 +14,7 @@ from sklearn.metrics import roc_curve
 
 from datetime import datetime
 
-
+s = 2
 # open data file
 df = pd.read_csv('airlinedelaycauses_DelayedFlights.csv')
 
