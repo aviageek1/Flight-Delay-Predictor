@@ -7,6 +7,8 @@
 
 import pandas as pd
 import math
+import re
+from datetime import datetime
 
 ######### Scikit Algorithms #########
 from sklearn.model_selection import train_test_split
@@ -19,7 +21,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import roc_curve
 
-from datetime import datetime
 
 
 
@@ -111,7 +112,6 @@ def check_occurances(origin, dest, df):
 def dummy(df):
     # dummify the origin and destination columns
     df = pd.get_dummies(df, columns=['Origin', 'Dest'])
-    # print(df.head())
 
     return df
     
@@ -205,30 +205,63 @@ def main():
     print("\nPlease note that commercial air traffic in 2008 took a big hit in terms of on-time performance, " 
           "and numbers will likely be lower than expected.")
     
+
+    while True:
+        # Prompt for the date and validate
+        date = input("\nEnter the flight's departure date in the format mm/dd: ").strip()
+
+        # Regular expression to check the date format
+        if re.match(r'^\d{2}/\d{2}$', date):
+            # If the date is valid, enter the time loop
+            while True:
+                time = input("Enter the time of the flight in the format HH:MM: ").strip()
+
+                # Check if time format is correct
+                if re.match(r'^\d{2}:\d{2}$', time):
+                    # Split the input to check if hours and minutes are valid
+                    hours, minutes = time.split(':')
+
+                    if 0 <= int(hours) < 24 and 0 <= int(minutes) < 60:
+                        break
+                    else:
+                        print("Invalid time. Hours must be between 00 and 23, and minutes between 00 and 59.\n")
+                else:
+                    print("Invalid format. Please enter the time in the format HH:MM.\n")
+            break
+        else:
+            print("Invalid format. Please enter the date in the format mm/dd.\n")
+
     
-    date = input("\nEnter the flight's departure date in the format mm/dd: ").strip()
-    time = input("Enter the time of the flight in the format hh:mm: ").strip()
-    o_airports = input("Enter an origin airport you would like to search for: ").strip().upper()
-    d_airports = input("Enter a destination airport you would like to search for: ").strip().upper()
+    o_airports = input("Enter the airport of origin for your flight: ").strip().upper()
+    d_airports = input("Enter the destination airport of your flight: ").strip().upper()
     print("\nLoading.. please wait")
     df = open_csv() # open, read, and create dataframe
     df = remove_extra(df) # clean and simplify dataframe
-
+    
     df = origins(o_airports, df)
     df = destinations(d_airports, df)
     
-    delay = int(input("\nEnter the amount of delay (in minutes) you would like to sort by (how late is too late?): "))
+    while True:
+        delay = input("\nEnter the amount of delay (in minutes) you would like to sort by (how late is too late?): ")
+        if (delay.isnumeric() == False): 
+            print("Please enter only numbers.")
+            continue
+        else: 
+            delay = int(delay)
+            break
     
+    print(delay)
     df = quantize(df, delay, o_airports, d_airports)
 
     df = dummy(df)
     df, model, accuracy = trees(df)
+    accuracy = (float(accuracy))*100
 
     departure_date_time = (f"{date}/2008 {time}:00")
     probability_on_time = (float(predict_delay(departure_date_time, o_airports, d_airports, df, model)))*100
 
     print(f"\nThe probability that your selected flight will be on-time is {probability_on_time:.0f}%.")
-    print(f"The model's accuracy is {accuracy}.\n")
+    print(f"The model's accuracy is {accuracy:.0f}%.\n")
 
 
 
